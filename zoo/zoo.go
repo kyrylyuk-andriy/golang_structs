@@ -3,20 +3,20 @@ package zoo
 import "fmt"
 
 type ZooKeeper struct {
-	FirstName string
-	LastName string
-	Age int
+	ZooKeeperName string
+	ZooKeeperAge int
 	ZooCage ZooCage
 }
 
 type ZooCage struct {
-	Number int
+	CageNumber int
+	IsOpen bool
 	Animal Animal
 }
 
 type Animal struct {
-	Name string
-	Age int
+	AnimalName string
+	AnimalAge int
 	Present bool
 }
 
@@ -44,39 +44,48 @@ func (ZooKeeper *ZooKeeper) StealReturnAnimal() {
 	}
 	}
 
+// Check Cage if its open or not
+func (cage *ZooCage) IsCageOpen() bool {
+	return cage.IsOpen
+}
+
+// Open the Cage
+func (cage *ZooCage) OpenTheCage() {
+	cage.IsOpen = true
+}
+
+// Close the Cage
+func (cage *ZooCage) CloseTheCage() {
+	cage.IsOpen = false
+}
+
 func Zoo() {
 // there are two zookeepers (Bob and Rob), four cages and four animals, each zookeepers is responible for two animals
 	zk1 := ZooKeeper{
-		FirstName: "Bob", LastName: "Bobenko", Age: 30, ZooCage: ZooCage{
-			Number: 1, Animal: Animal{
-				Name: "Wolf", Age: 5, Present: true,
+		ZooKeeperName: "Bob",  ZooKeeperAge: 30, ZooCage: ZooCage{
+			CageNumber: 1, IsOpen: false,  Animal: Animal{
+				AnimalName: "Wolf", AnimalAge: 5, Present: true,
 			},
-// was trying to add two animals under the same zookeepr but got next error from compiler
-// duplicate field name in struct literal: Number
-// duplicate field name in struct literal: Animal			
-//			Number: 2, Animal: Animal{
-//				Name: "Lion", Age: 4, Present: true,
-//			},
 		},
 	}
 	zk2 := ZooKeeper{
-		FirstName: "Bob", LastName: "Bobenko", Age: 30, ZooCage: ZooCage{
-			Number: 2, Animal: Animal{
-				Name: "Lion", Age: 4, Present: true,
+		ZooKeeperName: "Bob",  ZooKeeperAge: 30, ZooCage: ZooCage{
+			CageNumber: 2, IsOpen: false, Animal: Animal{
+				AnimalName: "Lion", AnimalAge: 4, Present: true,
 			},
 		},
 	}
 	zk3 := ZooKeeper{
-		FirstName: "Rob", LastName: "Robenko", Age: 40, ZooCage: ZooCage{
-			Number: 3, Animal: Animal{
-				Name: "Bear", Age: 3, Present: true,
+		ZooKeeperName: "Rob", ZooKeeperAge: 40, ZooCage: ZooCage{
+			CageNumber: 3,  IsOpen: false, Animal: Animal{
+				AnimalName: "Bear", AnimalAge: 3, Present: true,
 			},
 		},
 	}
 	zk4 := ZooKeeper{
-		FirstName: "Rob", LastName: "Robenko", Age: 40, ZooCage: ZooCage{
-			Number: 4, Animal: Animal{
-				Name: "Fox", Age: 1, Present: true,
+		ZooKeeperName: "Rob", ZooKeeperAge: 40, ZooCage: ZooCage{
+			CageNumber: 4,  IsOpen: false, Animal: Animal{
+				AnimalName: "Fox", AnimalAge: 1, Present: true,
 			},
 		},
 	}
@@ -87,9 +96,17 @@ func Zoo() {
 	fmt.Println(zk4)
 
 	fmt.Printf("status of the animal zk1 : %+v\n", zk1)
+	fmt.Printf("Is Cage 1 open? : %t\n", zk1.ZooCage.IsCageOpen() )
+	fmt.Println("Lets open the cage")
+	zk1.ZooCage.OpenTheCage()
+	fmt.Printf("Is Cage 1 open? : %t\n", zk1.ZooCage.IsCageOpen() )
 	zk1.StealReturnAnimal()
-	fmt.Printf("status of the amimal zk1 : %+v\n", zk1)
 	fmt.Printf("Is animal in a cage? : %t\n", zk1.ZooCage.Animal.IsPresent())
+	fmt.Println("Lets return animal to a cage")
 	zk1.StealReturnAnimal()
 	fmt.Printf("Is animal in a cage? : %t\n", zk1.ZooCage.Animal.IsPresent())
+	fmt.Printf("Is Cage 1 open? : %t\n", zk1.ZooCage.IsCageOpen() )
+	fmt.Println("Lets close the cage")
+	fmt.Printf("Is Cage 1 open? : %t\n", zk1.ZooCage.IsCageOpen() )
+	fmt.Printf("status of the animal zk1 : %+v\n", zk1)
 }
